@@ -1,0 +1,1 @@
+"use strict";angular.module("playerApp").directive("addNote",function(){return{templateUrl:"views/note/noteAddCardModal.html",restrict:"E",scope:{shownoteinlecture:"=",shownoteincourse:"=",courseid:"=",contentid:"=",visibility:"="},link:function(t,e,n){t.$watch("contentid",function(){t.updateContentId(t.contentid)})},controller:"NoteCardCtrl as noteCard"}});

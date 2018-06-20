@@ -1,0 +1,2 @@
+"use strict";
+angular.module("playerApp").service("learnService", ["restfulLearnerService", "config", function(e, r) { this.enrolledCourses = function(n) { var t = r.URL.COURSE.GET_ENROLLED_COURSES + "/" + n; return e.get(t) }, this.otherSections = function() { return e.get(r.URL.COURSE.GET_LEARN_OTHER_SECTION) }, this.recommendedCourses = function() { return e.get(r.URL.COURSE.RECOMMENDED_COURSE) } }]);

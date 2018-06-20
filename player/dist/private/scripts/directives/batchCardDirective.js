@@ -1,0 +1,1 @@
+"use strict";angular.module("playerApp").directive("batchCard",function(){return{templateUrl:"views/batch/batchCard.html",restrict:"E",scope:{showbatchcard:"=",coursecreatedby:"="},link:function(t,e,r,a){$("#batchStatusOptions").dropdown("set selected ",a.status),a.getCouserBatchesList()},controller:"BatchController as batch",bindToController:!0}});

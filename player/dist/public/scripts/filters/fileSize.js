@@ -1,0 +1,1 @@
+"use strict";angular.module("loginApp").filter("Filesize",function(){return function(e){return isNaN(e)&&(e=0),e<1024?e+" Bytes":(e/=1024)<1024?e.toFixed(2)+" Kb":(e/=1024)<1024?e.toFixed(2)+" Mb":(e/=1024)<1024?e.toFixed(2)+" Gb":(e/=1024,e.toFixed(2)+" Tb")}});

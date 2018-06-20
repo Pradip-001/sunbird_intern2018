@@ -1,0 +1,1 @@
+"use strict";angular.module("playerApp").controller("redirectURLController",["$rootScope","$scope","$timeout","$state","$stateParams","toasterService","adminService","QueryService","Visualizer",function(e,o,t,r,i,n,c,a,l){!function(){t(function(){window.open(window.redirectUrl,"_self")},window.timetobethere)}(),o.goBack=function(){window.close()}}]);

@@ -1,0 +1,49 @@
+<!doctype html>
+<html ng-app="loginApp">
+
+<head>
+    <meta charset="utf-8">
+    <title ng-bind="$root.titleName"></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/ico" ng-href="{{$root.faviconIcon || '/common/images/favicon.ico'}}">
+    <link rel="stylesheet" href="/themes/<%= theme ? theme : 'default' %>/semantic.min.css">
+
+    <!-- inject:css -->
+    <link rel="stylesheet" href="/public/external.min.css">
+    <!-- endinject -->
+    <link rel="stylesheet" href="/thirdparty/bower_components/jquery.fancytree/dist/skin-win8/ui.fancytree.min.css">
+    <link rel="stylesheet" href="/themes/<%= theme ? theme : 'default' %>/assets/styles/main.css">
+    <base href="/">
+</head>
+
+<body ng-controller="loginCtrl">
+    <input type="hidden" id="cdnUrl" value="<%=cdnUrl%>" />
+    <input type="hidden" id="defaultPortalLanguage" value="<%=defaultPortalLanguage%>" />
+    <input type="hidden" id="producerId" value="<%=producerId%>" />
+    <input type="hidden" id="instance" value="<%=instance%>" />
+    <div ng-include="'views/header/publicHeader.html'"></div>
+    <div class="ui top attached fluid container">
+        <div ng-class="{'dailcodePage-background' : $root.dailCodePageBackground === true,
+         'getPage-background' :  $root.getPageBackground}"
+        class="twelve wide column menu-public-header">
+            <div ui-view="mainView">
+            </div>
+        </div> 
+    </div>
+    <script src="../common/js/org.js?v=e2139ace310ee98430fc9614f6f14cda"></script>
+    <!-- inject:js -->
+    <script src="/public/external.min.js?v=e2139ace310ee98430fc9614f6f14cda"></script>
+    <script src="/thirdparty/semantic/semantic.min.js?v=e2139ace310ee98430fc9614f6f14cda"></script>
+    <script src="/private/scripts/utils/util.js?v=e2139ace310ee98430fc9614f6f14cda"></script>
+    <script src="/private/scripts/managers/eventManager.js?v=e2139ace310ee98430fc9614f6f14cda"></script>
+    <script src="/public/scripts/publicAppConfig.js?v=e2139ace310ee98430fc9614f6f14cda"></script>
+    <script src="/public/scripts/application.js?v=e2139ace310ee98430fc9614f6f14cda"></script>
+    <script src="/public/scripts/routes/publicAppRoute.js?v=e2139ace310ee98430fc9614f6f14cda"></script>
+    <script src="/public/script.min.js?v=e2139ace310ee98430fc9614f6f14cda"></script>
+    <!-- endinject -->
+    <script src="../common/js/frmelmnts.js?v=e2139ace310ee98430fc9614f6f14cda"></script>
+    <script src="../common/js/messages.js?v=e2139ace310ee98430fc9614f6f14cda"></script>
+</body>
+
+</html>

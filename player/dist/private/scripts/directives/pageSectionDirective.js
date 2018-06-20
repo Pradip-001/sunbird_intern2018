@@ -1,0 +1,1 @@
+"use strict";angular.module("playerApp").directive("pageSection",function(){return{templateUrl:"views/common/pageSection.html",restrict:"E",scope:{type:"="},link:function(e,t,n){},controller:"pageSectionCtrl as section"}});

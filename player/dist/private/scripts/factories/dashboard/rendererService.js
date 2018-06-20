@@ -1,0 +1,1 @@
+"use strict";angular.module("playerApp").factory("Visualizer",["LineChart",function(t){function r(t){this.chartType=t.type,this.chartObj=this.getChartInstance()}return r.prototype.render=function(t){return this.chartObj.render(t)},r.prototype.getChartInstance=function(){var r=null;switch(this.chartType){case"line":r=new t}return r},r}]);

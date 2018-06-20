@@ -1,0 +1,1 @@
+"use strict";angular.module("playerApp").service("PaginationService",[function(){this.GetPager=function(e,a,t){a=a||1,t=t||10;var n,r,i=Math.ceil(e/t);i<=5?(n=1,r=i):a<=1?(n=1,r=5):a+4>=i?(n=i-4,r=i):(n=a,r=a+4);var g=(a-1)*t;return{totalItems:e,currentPage:a,pageSize:t,totalPages:i,startPage:n,endPage:r,startIndex:g,endIndex:Math.min(g+t-1,e-1),pages:_.range(n,r+1)}}}]);

@@ -1,0 +1,1 @@
+"use strict";angular.module("loginApp").filter("dateFilterWithMDY",function(){return function(t){return moment(t).format("MMMM Do YYYY")}}).filter("dateFilterXTimeAgo",function(){return function(t){var r=moment(t).local().format("YYYY-MM-DD HH:mm:ss");return moment(r).fromNow()}});

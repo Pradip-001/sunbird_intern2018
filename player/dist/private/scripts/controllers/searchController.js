@@ -1,0 +1,1 @@
+"use strict";angular.module("playerApp").controller("SearchCtrl",["$timeout","$rootScope",function(t,a){this.initSearch=function(){a.search&&(a.search.searchResult={},a.search.autosuggest_data=[]),t(function(){a.$broadcast("initSearch",{})},500)}}]);

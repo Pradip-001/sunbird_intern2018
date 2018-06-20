@@ -1,0 +1,1 @@
+"use strict";angular.module("playerApp").service("dataService",function(){var t={};this.setData=function(a,e){t[a]=e},this.getData=function(a){return t[a]}});

@@ -1,0 +1,1 @@
+angular.module("playerApp").service("geoService",["$rootScope","restfulLearnerService","config",function(e,r,o){this.getItems=function(e,o){var t="org/v1/location/read/"+e.id+"?type=organisation";return r.get(t,e)}}]);

@@ -1,0 +1,1 @@
+"use strict";angular.module("playerApp").factory("sessionService",["$window",function(e){var s=s||JSON.parse(e.sessionStorage.getItem("sbConfig")||"{}");return{getSessionData:function(e){return s[e]},setSessionData:function(t,n){s[t]=n,e.sessionStorage.setItem("sbConfig",JSON.stringify(s))}}}]);

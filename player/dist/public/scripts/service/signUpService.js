@@ -1,0 +1,1 @@
+"use strict";angular.module("loginApp").service("signUpService",["httpService","config",function(i,n){this.signUp=function(e){var t=n.URL.BASE_PREFIX+n.URL.LEARNER_PREFIX+n.URL.USER.SIGNUP;return i.post(t,e)}}]);

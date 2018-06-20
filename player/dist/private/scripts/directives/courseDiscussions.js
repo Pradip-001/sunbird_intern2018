@@ -1,0 +1,1 @@
+"use strict";angular.module("playerApp").directive("courseDiscussions",function(){return{templateUrl:"views/course/courseDiscussions.html",restrict:"E",scope:{showaskquestion:"="},link:function(s,e,i){s.showAskQuestion=s.showaskquestion}}});

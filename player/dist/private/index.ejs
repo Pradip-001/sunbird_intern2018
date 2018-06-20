@@ -1,0 +1,66 @@
+<!doctype html>
+<html ng-app="playerApp">
+
+<head>
+    <meta charset="utf-8">
+    <title>Sunbird</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link id="dynamic-favicon" rel="icon" type="image/ico" href="/common/images/favicon.ico">
+    <link rel="stylesheet" href="/themes/<%= theme ? theme : 'default' %>/semantic.min.css">
+    <link rel="stylesheet" href="/thirdparty/bower_components/angular-pagedown/angular-pagedown.min.css">
+    <link rel="stylesheet" href="/thirdparty/bower_components/slick-carousel/slick/slick.css" />
+    <link rel="stylesheet" href="/thirdparty/bower_components/slick-carousel/slick/slick-theme.css" />
+
+    <!-- inject:css -->
+    <link rel="stylesheet" href="/private/external.min.css">
+    <!-- endinject -->
+    <link rel="stylesheet" href="/thirdparty/bower_components/jquery.fancytree/dist/skin-win8/ui.fancytree.min.css">
+    <link rel="stylesheet" href="/themes/<%= theme ? theme : 'default' %>/assets/styles/main.css">
+    <base href="/private/index">
+</head>
+
+<body  ng-controller="AppCtrl">
+    <input type="hidden" id="userId" value="<%=userId%>" />
+    <input type="hidden" id="sessionId" value="<%=sessionId%>" />
+    <input type="hidden" id="cdnUrl" value="<%=cdnUrl%>" />
+    <input type="hidden" id="theme" value="<%=theme%>" />
+    <input type="hidden" id="logSession" value="<%=logSession%>" />
+    <input type="hidden" id="producerId" value="<%=producerId%>" />
+    <input type="hidden" id="defaultPortalLanguage" value="<%=defaultPortalLanguage%>" />
+    <input type="hidden" id="contentChannelFilterType" value="<%=contentChannelFilterType%>" />
+    <div ng-include="'views/common/topHeader.html'"></div>
+    <div class="ui top attached fluid container">
+        <div class="ui padded grid">
+            <div class="row">
+                <div class="twelve wide column">
+                    <main>
+                        <div ui-view="mainView">
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/common/js/org.js?v=ff81ef0205e3606f37f642dcc6f6c018"></script>
+    <!-- inject:js -->
+    <script src="/private/external.min.js?v=ff81ef0205e3606f37f642dcc6f6c018"></script>
+    <script src="/thirdparty/semantic/semantic.min.js?v=ff81ef0205e3606f37f642dcc6f6c018"></script>
+    <script src="/private/scripts/utils/util.js?v=ff81ef0205e3606f37f642dcc6f6c018"></script>
+    <script src="/private/scripts/playerAppConfig.js?v=ff81ef0205e3606f37f642dcc6f6c018"></script>
+    <script src="/private/scripts/managers/eventManager.js?v=ff81ef0205e3606f37f642dcc6f6c018"></script>
+    <script src="/private/scripts/app.js?v=ff81ef0205e3606f37f642dcc6f6c018"></script>
+    <script src="/private/scripts/routes/appRoute.js?v=ff81ef0205e3606f37f642dcc6f6c018"></script>
+    <script src="/private/script.min.js?v=ff81ef0205e3606f37f642dcc6f6c018"></script>
+    <script src="/private/scripts/routes/announcementRoute.js?v=ff81ef0205e3606f37f642dcc6f6c018"></script>
+    <!-- endinject -->
+    <script src="../common/js/frmelmnts.js?v=ff81ef0205e3606f37f642dcc6f6c018"></script>
+    <script src="../common/js/messages.js?v=ff81ef0205e3606f37f642dcc6f6c018"></script>
+    <script src="../../node_modules/angular/angular.js?v=ff81ef0205e3606f37f642dcc6f6c018"></script>
+    <script src="../../node_modules/angular-inview/angular-inview.js?v=ff81ef0205e3606f37f642dcc6f6c018"></script>
+    <script src="/private/scripts/directives/iitbxDirective.js"></script>
+    <script src="/private/scripts/controllers/iitbxController.js"></script>
+
+</body>
+
+</html>
