@@ -42,8 +42,8 @@ module.exports = function (app) {
     .patch(requestMiddleware.createAndValidateRequestBody, requestMiddleware.validateToken,
       requestMiddleware.hierarchyUpdateApiAccess, courseService.updateCourseHierarchyAPI)
       // tantrojan
-  app.route(BASE_URL + '/iitbx').get(iitbx.getAllAPI)
-  app.route(BASE_URL + '/iitbx/:name').get(iitbx.getByNameAPI)
+  app.route(BASE_URL + '/iitbx').get(iitbx.getCoursesAPI)
+  app.route(BASE_URL + '/iitbx/:course_name').get(iitbx.getObjectsAPI)
   app.route(BASE_URL + '/iitbx/:type').get(iitbx.getByTypeAPI)
   //
 

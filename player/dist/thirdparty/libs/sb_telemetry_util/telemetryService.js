@@ -20,7 +20,9 @@ telemetryService.prototype.init = function (config) {
   default_config.dispatcher = new telemetrySyncManager()
   default_config.dispatcher.init(config)
   this.config = Object.assign({}, config, default_config)
+	console.log("Happy to see this message")
   Telemetry.initialize(this.config)
+	console.log("Happier to see this message")
 }
 
 /**
@@ -29,7 +31,7 @@ telemetryService.prototype.init = function (config) {
  */
 
 telemetryService.prototype.start = function (data) {
-  console.log("Start event")
+  console.log("Happy to Start event")
   if (data.context) { this.context.push(data.context) }
   Telemetry.start(this.config, data.contentId, data.contentVer, data.edata, {
     context: data.context,

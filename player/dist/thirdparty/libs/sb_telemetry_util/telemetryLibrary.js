@@ -1869,6 +1869,7 @@ var TelemetrySyncManager = {
   init: function () {
     var instance = this
     document.addEventListener('TelemetryEvent', this.sendTelemetry)
+	  console.log("TelemetrySyncMgr init")
   },
   sendTelemetry: function (event) {
     var Telemetry = EkTelemetry || Telemetry
@@ -1983,6 +1984,7 @@ var EkTelemetry = (function () {
  * @param  {object} config - Configurations for the telemetry lib to initialize the service. " Example: config = { batchsize:10,host:"" } "
  */
   this.ektelemetry.initialize = function (config) {
+	  console.log("Happy to EkTelemetry initialize...")
     instance.init(config)
   }
 
@@ -2047,6 +2049,7 @@ var EkTelemetry = (function () {
  * @param  {object} options    [It can have `context, object, actor` can be explicitly passed in this event]
  */
   this.ektelemetry.interact = function (data, options) {
+	  console.log("getting interact message .................")
     if (!instance.hasRequiredData(data, ['type', 'id'])) {
       console.error('Invalid interact data')
       return
