@@ -2,6 +2,7 @@
 Made by Tanmoy Ghosh (tantrojan)
 */
 const request =require("request");
+const http = require("http");
 
 var storageUrl="";
 var xAuth="";
@@ -83,8 +84,44 @@ module.exports = {
 		  res.send(matrix);
 		});
 	},
-	getByTypeAPI : function(req,res){
+	getParticularObjectAPI : function(req,res){
+		var options = {
+			method: 'GET',
+			host: '10.129.103.86',
+			port: 8080,
+			path: '/v1/AUTH_b3f70be8acad4ec197e2b5edf48d9e5a/' + req.params['course_name'] +'/' + req.params['obj_name'],
+			headers : {
+				'x-auth-token' : xAuth,
+			}
+		};
 
+		var request = http.request(options, function(response) {
+			var data = [];
+			// console.log("CONNECTED TO SWIFT")
+			response.on('data', function(chunk) {
+				data.push(chunk);
+			});
+
+			response.on('end', function() {
+				data = Buffer.concat(data);
+				// console.log('requested content length: ', response.headers['content-length'] , response.headers['content-type']);
+				// console.log('parsed content length: ', data.length);
+				res.writeHead(200, {
+					'Content-Type': response.headers['content-type'],
+					'content-disposition' : 'inline',
+					'Content-Length': data.length
+				});
+				res.end(data);
+			});
+		});
+
+		request.end();
+		
 	},
+	postCoursesAPI : function(req,res){
+		
+		console.log(req.body);
+		res.end();
+	}
 
 }

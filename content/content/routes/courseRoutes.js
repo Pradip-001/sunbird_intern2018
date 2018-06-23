@@ -6,6 +6,7 @@
 
 var courseService = require('../service/courseService')
 var requestMiddleware = require('../middlewares/request.middleware')
+var bodyParser = require('body-parser')
 
 var BASE_URL = '/v1/course'
 
@@ -14,6 +15,10 @@ var iitbx = require('../service/iitbx')
 //
 
 module.exports = function (app) {
+
+  app.use(bodyParser.json())
+  app.use(bodyParser.urlencoded({ extended: true })) 
+
   app.route(BASE_URL + '/search')
     .post(requestMiddleware.createAndValidateRequestBody, courseService.searchCourseAPI)
 
@@ -43,8 +48,9 @@ module.exports = function (app) {
       requestMiddleware.hierarchyUpdateApiAccess, courseService.updateCourseHierarchyAPI)
       // tantrojan
   app.route(BASE_URL + '/iitbx').get(iitbx.getCoursesAPI)
+  app.route(BASE_URL + '/iitbx').post(iitbx.postCoursesAPI)
   app.route(BASE_URL + '/iitbx/:course_name').get(iitbx.getObjectsAPI)
-  app.route(BASE_URL + '/iitbx/:type').get(iitbx.getByTypeAPI)
+  app.route(BASE_URL + '/iitbx/:course_name/:obj_name').get(iitbx.getParticularObjectAPI)
   //
 
 }

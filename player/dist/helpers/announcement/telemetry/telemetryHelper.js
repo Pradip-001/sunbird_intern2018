@@ -159,6 +159,7 @@ module.exports = {
  */
   generateApiCallLogEvent: function (reqID, options, url) {
     if (!reqID || !options || !url) {
+    console.log('helper file')
       console.log('Invalid params: generateApiCallLogEvent: ', url, reqID)
       return
     }
@@ -167,7 +168,8 @@ module.exports = {
     const message = telemetryData.message || 'Calling learner service api'
     const level = 'api_call'
     const edata = telemetry.logEventData('INFO', level, message, params)
-    console.log('generateApiCallLogEvent: ')
+    console.log('helper file position 2')
+    console.log('generateApiCallLogEvent new change : ')
     telemetry.log({
       edata: edata,
       context: telemetryData && telemetryData.context && telemetry.getContextData(telemetryData.context),
@@ -181,6 +183,7 @@ module.exports = {
  */
   generateApiAccessLogEvent: function (reqID) {
     if (!reqID) {
+    console.log('helper file location 3')
       console.log('Invalid params: generateApiAccessLogEvent: ', reqID)
       return
     }
@@ -188,7 +191,7 @@ module.exports = {
     const message = (telemetryData.edata && telemetryData.edata.message) || ''
     const level = 'api_access'
     const edata = telemetry.logEventData('INFO', level, message, telemetryData.params)
-    console.log('generateApiAccessLogEvent: ')
+    console.log('generateApiAccessLogEvent helper file: ')
     telemetry.log({
       edata: edata,
       context: telemetry.getContextData(telemetryData.context),
