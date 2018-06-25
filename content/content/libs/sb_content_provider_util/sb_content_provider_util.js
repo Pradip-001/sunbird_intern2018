@@ -74,8 +74,17 @@ compositeSearch = function (data, headers, cb) {
 }
 
 updateContent = function (data, content_id, headers, cb) {
+
+  console.log("Inside updateContent in sb_content_provider_util")
+  console.log("Data")
+  console.log(data)
+
   var url = configUtil.getConfig('BASE_URL') + configUtil.getConfig('UPDATE_CONTENT_URI') + '/' + content_id
   var options = getHttpOptions(url, data, 'PATCH', false, headers)
+  console.log("BASE_URL:")
+  console.log(BASE_URL)
+  console.log("Complete URL")
+  console.log(url)
   sendRequest(options, cb)
 }
 
@@ -86,10 +95,26 @@ getContent = function (content_id, headers, cb) {
 }
 
 getContentUsingQuery = function (content_id, query, headers, cb) {
+
+  
   var url = configUtil.getConfig('BASE_URL') + configUtil.getConfig('GET_CONTENT_URI') + '/' + content_id
   var options = getHttpOptions(url, null, 'GET', false, headers)
   options.qs = query
   sendRequest(options, cb)
+
+  console.log("New changesin getContentUsingQuery")
+  console.log("url")
+  console.log(url)
+  console.log("options")
+  console.log(options)
+  console.log("query")
+  console,log(query)
+  console.log("cb")
+  console.log(cb)
+  console.log("headers")
+  console.log(headers)
+
+
 }
 
 reviewContent = function (data, content_id, headers, cb) {
@@ -415,7 +440,8 @@ function generateApiCallLogEvent (http_options) {
 
 function sendRequest (http_options, cb) {
   var options = Object.assign({}, http_options)
-  generateApiCallLogEvent(http_options)
+  // removed api call event
+  //generateApiCallLogEvent(http_options)
   delete options.headers['telemetryData']
 
   httpUtil.sendRequest(options, function (err, resp, body) {

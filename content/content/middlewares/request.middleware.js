@@ -8,7 +8,7 @@ var path = require('path')
 var contentProvider = require('sb_content_provider_util')
 var ApiInterceptor = require('sb_api_interceptor')
 var _ = require('underscore')
-
+var filterService = require('../service/filterService')
 var reqMsg = messageUtil.REQUEST
 var responseCode = messageUtil.RESPONSE_CODE
 var apiVersions = messageUtil.API_VERSION
@@ -52,7 +52,7 @@ function createAndValidateRequestBody (req, res, next) {
     startTime: new Date(),
     method: req.originalMethod
   }
-
+  console.log("New Changes at create and validate body ")
   rspObj.telemetryData = {
     params: utilsService.getParamsDataForLogEvent(rspObj),
     context: utilsService.getTelemetryContextData(req),
@@ -70,7 +70,7 @@ function createAndValidateRequestBody (req, res, next) {
   var requestedData = {body: req.body, params: req.body.params, headers: req.headers}
   LOG.info(utilsService.getLoggerData(rspObj, 'INFO',
     filename, 'createAndValidateRequestBody', 'API request come', requestedData))
-
+  console.log("New Changes LOG.info")
   req.rspObj = rspObj
   next()
 }
@@ -84,6 +84,13 @@ function createAndValidateRequestBody (req, res, next) {
 function validateToken (req, res, next) {
   var token = req.headers['x-authenticated-user-token']
   var rspObj = req.rspObj
+
+
+  console.log("New Changes validateToken")
+  console.log(rspObj)
+
+
+
 
   if (!token) {
     LOG.error(utilsService.getLoggerData(rspObj, 'ERROR', filename, 'validateToken', 'API failed due to missing token'))
@@ -122,6 +129,11 @@ function apiAccessForCreatorUser (req, response, next) {
   var userId = req.headers['x-authenticated-userid']
   var data = {}
   var rspObj = req.rspObj
+ 
+
+
+
+
   var qs = {
     fields: 'createdBy'
   }
@@ -129,12 +141,20 @@ function apiAccessForCreatorUser (req, response, next) {
 
   data.contentId = req.params.contentId
 
+  console.log("contentMessage")
+  console.log(contentMessage)
+
+
+
+
   async.waterfall([
 
     function (CBW) {
       contentProvider.getContentUsingQuery(data.contentId, qs, req.headers,
         function (err, res) {
           if (err || res.responseCode !== responseCode.SUCCESS) {
+
+            console.log("In erroe fn in waterfall")
             LOG.error(utilsService.getLoggerData(rspObj, 'ERROR', filename,
               'apiAccessForCreatorUser', 'Getting error from content provider', res))
             rspObj.errCode = res && res.params ? res.params.err : contentMessage.GET.FAILED_CODE
@@ -143,6 +163,7 @@ function apiAccessForCreatorUser (req, response, next) {
             var httpStatus = res && res.statusCode >= 100 && res.statusCode < 600 ? res.statusCode : 500
             return response.status(httpStatus).send(respUtil.errorResponse(rspObj))
           } else {
+   		console.log("NO error in waterfall ")
             CBW(null, res)
           }
         })
@@ -227,7 +248,13 @@ function hierarchyUpdateApiAccess (req, response, next) {
     fields: 'createdBy'
   }
   var contentMessage = messageUtil.CONTENT
-
+  console.log("New changes in request.middleware")
+  console.log("userId")
+  console.log(userId)
+  console.log(rspObj)
+  
+  console.log("New changes :Accessed data by HierarchyUpdateAPi Acceess")
+  console.log(data)
   if (!data.request || !data.request.data || !data.request.data.hierarchy) {
     LOG.error(utilsService.getLoggerData(rspObj, 'ERROR', filename, 'hierarchyUpdateApiAccess',
       'Error due to required params are missing', data.request))
@@ -242,6 +269,11 @@ function hierarchyUpdateApiAccess (req, response, next) {
     if (item.root === true) return item
   })
 
+  console.log("new Changes: hierarchy=")
+  console.log(hierarchy)
+  console.log("data.contentId=")
+  console.log(data.contentId)
+
   async.waterfall([
     function (CBW) {
       contentProvider.getContentUsingQuery(data.contentId, qs, req.headers, function (err, res) {
@@ -252,8 +284,13 @@ function hierarchyUpdateApiAccess (req, response, next) {
           rspObj.errMsg = res && res.params ? res.params.errmsg : contentMessage.GET.FAILED_MESSAGE
           rspObj.responseCode = res && res.responseCode ? res.responseCode : responseCode.SERVER_ERROR
           var httpStatus = res && res.statusCode >= 100 && res.statusCode < 600 ? res.statusCode : 500
+    	  console.log("New Changes : httpStatus & rspObj")
+	  console.log(httpStatus)
+	 console.log(rspObj)
           return response.status(httpStatus).send(respUtil.errorResponse(rspObj))
         } else {
+          console.log("No error in Waterfall")
+	  console.log(res)
           CBW(null, res)
         }
       })
@@ -295,6 +332,25 @@ function checkChannelID (req, res, next) {
   next()
 }
 
+function addChannelFilters (req, res, next) {
+  // Assuming that if request has filter by channel we use that or else the config
+  if (req && req.body && req.body.request && req.body.request.filters && req.body.request.filters.channel) {
+    next()
+  } else {
+    filterService.getChannelSearchString(function (err, channels) {
+      if (err) {
+        LOG.error(utilsService.getLoggerData({}, 'ERROR', filename, 'addChannelFilters',
+          'failed to get channels'))
+      } else if (channels && (!_.isEmpty(channels))) {
+        req.body.request.filters.channel = channels
+        LOG.info(utilsService.getLoggerData({}, 'INFO',
+          filename, 'addChannelFilters', 'added channel filter', req.body.request.filters.channel))
+      }
+      next()
+    })
+  }
+}
+
 // Exports required function
 module.exports.validateToken = validateToken
 module.exports.createAndValidateRequestBody = createAndValidateRequestBody
@@ -302,3 +358,4 @@ module.exports.apiAccessForReviewerUser = apiAccessForReviewerUser
 module.exports.apiAccessForCreatorUser = apiAccessForCreatorUser
 module.exports.hierarchyUpdateApiAccess = hierarchyUpdateApiAccess
 module.exports.checkChannelID = checkChannelID
+module.exports.addChannelFilters = addChannelFilters

@@ -8,6 +8,12 @@ var TelemetryUtil = require('sb_telemetry_util')
 var telemetry = new TelemetryUtil()
 var fs = require('fs')
 var configUtil = require('sb-config-util')
+var _ = require('underscore')
+var filename = path.basename(__filename)
+var utilsService = require('./service/utilsService')
+var LOG = require('sb_logger_util')
+
+// TODO below configuration should to be refactored in a seperate file
 
 const contentProviderConfigPath = path.join(__dirname, '/config/contentProviderApiConfig.json')
 var contentProviderApiConfig = JSON.parse(fs.readFileSync(contentProviderConfigPath))
@@ -28,6 +34,9 @@ const learnerServiceBaseUrl = process.env.sunbird_learner_service_base_url ? pro
 const learnerServiceLocalBaseUrl = process.env.sunbird_learner_service_local_base_url
   ? process.env.sunbird_learner_service_local_base_url
   : 'http://learner-service:9000'
+
+const whiteListedChannelList = process.env.sunbird_content_service_whitelisted_channels
+const blackListedChannelList = process.env.sunbird_content_service_blacklisted_channels
 
 const producerId = process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.content-service'
 
@@ -62,9 +71,6 @@ const bodyParserJsonMiddleware = function () {
 }
 
 app.use(bodyParserJsonMiddleware())
-// app.use(bodyParser.urlencoded({
-//     extended: true
-// }));
 
 app.use(methodOverride())
 
@@ -87,11 +93,6 @@ app.use(function (req, res, next) {
   next()
 })
 
-app.get('/getcallback',function(req,res){
-  res.send("Working");
-})
-
-
 require('./routes/healthCheckRoutes')(app)
 require('./routes/courseRoutes')(app)
 require('./routes/contentRoutes')(app)
@@ -104,7 +105,7 @@ require('./routes/frameworkTermRoutes')(app)
 require('./routes/frameworkCategoryInstanceRoutes')(app)
 require('./routes/dataExhaustRoutes')(app)
 require('./routes/formRoutes')(app)
-
+require('./routes/externalUrlMetaRoute')(app)
 // this middleware route add after all the routes
 require('./middlewares/proxy.middleware')(app)
 
@@ -116,6 +117,7 @@ this.server = http.createServer(app).listen(port, function () {
     'start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
     process.exit(1)
   }
+  updateConfig(getFilterConfig())
 })
 
 // Close server, when we start for test cases
@@ -146,19 +148,26 @@ const telemetryConfig = {
 
 telemetry.init(telemetryConfig)
 
-function exitHandler (options, err) {
-  console.log('Exit', options, err)
-  telemetry.syncOnExit(function (err, res) {
-    if (err) {
-      process.exit()
-    } else {
-      process.exit()
-    }
-  })
+// function to update the config
+function updateConfig (configString) {
+  configUtil.setConfig('CHANNEL_FILTER_QUERY_STRING', configString)
 }
 
-// catches ctrl+c event
-process.on('SIGINT', exitHandler)
-
-// catches uncaught exceptions
-process.on('uncaughtException', exitHandler)
+// function to generate the search string
+function getFilterConfig () {
+  LOG.info(utilsService.getLoggerData({}, 'INFO',
+    filename, 'getFilterConfig', 'environment info', process.env))
+  var allowedChannels = whiteListedChannelList ? whiteListedChannelList.split(',') : []
+  var blackListedChannels = blackListedChannelList ? blackListedChannelList.split(',') : []
+  var configString = {}
+  if ((allowedChannels && allowedChannels.length > 0) && (blackListedChannels && blackListedChannels.length > 0)) {
+    configString = _.difference(allowedChannels, blackListedChannels)
+  } else if (allowedChannels && allowedChannels.length > 0) {
+    configString = allowedChannels
+  } else if (blackListedChannels && blackListedChannels.length > 0) {
+    configString = { 'ne': blackListedChannels }
+  }
+  LOG.info(utilsService.getLoggerData({}, 'INFO',
+    filename, 'getFilterConfig', 'config string', configString))
+  return configString
+}

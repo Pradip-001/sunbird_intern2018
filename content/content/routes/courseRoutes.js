@@ -6,21 +6,26 @@
 
 var courseService = require('../service/courseService')
 var requestMiddleware = require('../middlewares/request.middleware')
-var bodyParser = require('body-parser')
 
 var BASE_URL = '/v1/course'
 
-// tantrojan
-var iitbx = require('../service/iitbx')
-//
-
 module.exports = function (app) {
 
-  app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({ extended: true })) 
-
+  console.log("New Changes in course-route.js")
+  console.log("Base URL is:")
+  console.log(BASE_URL)
+  console.log("requestMiddleware.createAndValidateRequestBody")
+  console.log(requestMiddleware.createAndValidateRequestBody)
+  console.log("requestMiddleware.validateToken")
+  console.log(requestMiddleware.validateToken)
+  console.log("requestMiddleware.hierarchyUpdateApiAccess")
+  console.log(requestMiddleware.hierarchyUpdateApiAccess)
+  console.log("courseService.updateCourseHierarchyAPI")
+  console.log(courseService.updateCourseHierarchyAPI)
+  
   app.route(BASE_URL + '/search')
-    .post(requestMiddleware.createAndValidateRequestBody, courseService.searchCourseAPI)
+    .post(requestMiddleware.createAndValidateRequestBody, requestMiddleware.addChannelFilters,
+      courseService.searchCourseAPI)
 
   app.route(BASE_URL + '/create')
     .post(requestMiddleware.createAndValidateRequestBody, courseService.createCourseAPI)
@@ -46,11 +51,4 @@ module.exports = function (app) {
   app.route(BASE_URL + '/hierarchy/update')
     .patch(requestMiddleware.createAndValidateRequestBody, requestMiddleware.validateToken,
       requestMiddleware.hierarchyUpdateApiAccess, courseService.updateCourseHierarchyAPI)
-      // tantrojan
-  app.route(BASE_URL + '/iitbx').get(iitbx.getCoursesAPI)
-  app.route(BASE_URL + '/iitbx').post(iitbx.postCoursesAPI)
-  app.route(BASE_URL + '/iitbx/:course_name').get(iitbx.getObjectsAPI)
-  app.route(BASE_URL + '/iitbx/:course_name/:obj_name').get(iitbx.getParticularObjectAPI)
-  //
-
 }

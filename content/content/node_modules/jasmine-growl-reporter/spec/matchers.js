@@ -1,10 +1,7 @@
-
-var _ = require('underscore');
+var _ = require('lodash');
 
 beforeEach(function() {
-
   this.addMatchers({
-
     toHaveNotified: function(message, options) {
 
       var actual = this.actual;

@@ -1,6 +1,6 @@
 {
   "name": "content-service",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "This service used to perform CRUD operations on content",
   "main": "app.js",
   "scripts": {
@@ -25,7 +25,6 @@
     "fs": "0.0.2",
     "fs-extra": "5.0.0",
     "gm": "1.23.1",
-    "http": "0.0.0",
     "https": "^1.0.0",
     "jsonwebtoken": "8.2.0",
     "lodash": "4.17.4",
@@ -45,6 +44,7 @@
     "sb_req_validator_util": "file:libs/sb_req_validator_util",
     "sb_telemetry_util": "file:libs/sb_telemetry_util",
     "underscore": "^1.8.3",
+    "url-metadata": "^2.1.7",
     "uuid": "^3.0.1",
     "zip-folder": "1.0.0"
   },
@@ -62,6 +62,7 @@
     "husky": "^0.14.3",
     "jasmine-node": "^1.14.5",
     "lint-staged": "^6.0.1",
+    "node-mocks-http": "^1.7.0",
     "rimraf": "2.6.2"
   },
   "standard": {

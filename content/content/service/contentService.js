@@ -137,6 +137,8 @@ function createContentAPI (req, response) {
   var data = req.body
   var rspObj = req.rspObj
 
+  console.log('New changes createContentAPI')
+  console.log(data.request.content)
   if (!data.request || !data.request.content || !validatorUtil.validate(data.request.content, contentModel.CREATE)) {
     // prepare
     LOG.error(utilsService.getLoggerData(rspObj, 'ERROR', filename, 'createContentAPI',
