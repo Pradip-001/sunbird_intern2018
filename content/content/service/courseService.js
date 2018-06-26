@@ -152,7 +152,10 @@ function createCourseAPI (req, response) {
   var data = req.body
   var rspObj = req.rspObj
 
-  console.log('New changes createCourseAPI')
+  console.log('New changes createCourse Service')
+  console.log('Request Data: ')
+  console.log(req)
+  console.log('Course Data: ')
   console.log(data.request.course)
   if (!data.request || !data.request.course || !validatorUtil.validate(data.request.course, courseModel.CREATE)) {
     // prepare
@@ -171,6 +174,8 @@ function createCourseAPI (req, response) {
 
   var ekStepReqData = transformReqBody(data.request, 'course', 'content')
 
+  console.log('Ekstep Request')
+  console.log(ekStepReqData)
   async.waterfall([
 
     function (CBW) {
@@ -595,11 +600,12 @@ function getCourseHierarchyAPI (req, response) {
 function updateCourseHierarchyAPI (req, response) {
   var data = req.body
   var rspObj = req.rspObj
-
- console.log("New changes in updateCourseHierarchyAPI")
- console.log(data)
- console.log(rspObj)
- 
+	
+  console.log('Our Logs: in updateCourseHierarchyAPI of courseService.js')
+  console.log('data: ')
+  console.log(data)
+  console.log('rspObj')
+  console.log(rspObj)
 
   if (!data.request || !data.request.data || !data.request.data.hierarchy) {
     LOG.error(utilsService.getLoggerData(rspObj, 'ERROR', filename, 'updateCourseHierarchyAPI',
@@ -616,29 +622,18 @@ function updateCourseHierarchyAPI (req, response) {
 
   // Adding objectData in telemetryData object
   if (rspObj.telemetryData) {
-
-   console.log(" rspObj.telemetryData.object =")
-   console.log(rspObj.telemetryData.object)
-
     rspObj.telemetryData.object = utilsService.getObjectData(data.courseId, 'course', '', {})
   }
 
   async.waterfall([
     function (CBW) {
-
-     console.log("CBW =")
-     console.log(CBW)
-
       var ekStepReqData = {request: data.request}
-
-     console.log("ekStepData =")
-    console.log(ekStepData)
-
       LOG.info(utilsService.getLoggerData(rspObj, 'INFO', filename, 'updateCourseHierarchyAPI',
         'Request to content provider to update the course hierarchy', ekStepReqData))
       contentProvider.contentHierarchyUpdate(ekStepReqData, req.headers, function (err, res) {
         if (err || res.responseCode !== responseCode.SUCCESS) {
-          LOG.error(utilsService.getLoggerData(rspObj, 'ERROR', filename, 'updateCourseHierarchyAPI',
+          console.log('Our Logs: error in waterfall of updateCourseHierarchyAPI') 
+	  LOG.error(utilsService.getLoggerData(rspObj, 'ERROR', filename, 'updateCourseHierarchyAPI',
             'Getting error from content provider', res))
           rspObj.errCode = courseMessage.HIERARCHY_UPDATE.FAILED_CODE
           rspObj.errMsg = courseMessage.HIERARCHY_UPDATE.FAILED_MESSAGE
@@ -647,20 +642,18 @@ function updateCourseHierarchyAPI (req, response) {
           rspObj = utilsService.getErrorResponse(rspObj, res)
           return response.status(httpStatus).send(respUtil.errorResponse(rspObj))
         } else {
+	  console.log('Our Logs: No error in waterfall of updateCourseHierarchyAPI')
+	  console.log('res: ')
+	  console.log(res)
           CBW(null, res)
         }
       })
     },
     function (res) {
       rspObj.result = res.result
-
-     
-
       LOG.info(utilsService.getLoggerData(rspObj, 'INFO', filename, 'updateCourseHierarchyAPI',
-        'Sending response back to user', rspObj))   
-   return response.status(200).send(respUtil.successResponse(rspObj))
-   console.log(" It goes to utilsService")
-
+        'Sending response back to user', rspObj))
+      return response.status(200).send(respUtil.successResponse(rspObj))
     }
   ])
 }

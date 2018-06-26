@@ -208,6 +208,8 @@ app.all('/private/service/v1/content/data/v1/telemetry',
     limit: reqDataLimitOfContentUpload,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: function (req) {
+	console.log("Our Logs: proxy for /private/service/v1/content/data/v1/telemetry called")
+	console.log(envHelper.content_Service_Local_BaseUrl)
       return require('url').parse(envHelper.content_Service_Local_BaseUrl + '/v1/telemetry').path
     }
   }))

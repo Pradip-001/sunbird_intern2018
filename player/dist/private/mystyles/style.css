@@ -122,3 +122,19 @@ input[type=submit]:hover {
 	height:50px;
 	width: 50px;
 }
+
+.topics{
+	
+	background-color: pink;
+	border-radius: 3px;
+	padding: 10px;
+	margin:5px;
+}
+
+.addbutton{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.submitformbutton{
+	margin-top: 10px;
+}

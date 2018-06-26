@@ -5,6 +5,20 @@ const telemetry = new TelemetryUtil()
 
 getHttpOptions = function (url, data, method, formData, headers) {
   var defaultHeaders = {
+
+  console.log("New changes in getHttpOptions of sb_content_provider_util")
+  console.log("url =")
+  console.log(url)
+  console.log("data =")
+ console.log(data)
+ console.log("method =")
+ console.log(method)
+ console.log("formData =")
+ console.log(formData)
+ console.log("headers =")
+ console.log(headers)
+
+
     'Content-Type': 'application/json',
     'Authorization': configUtil.getConfig('Authorization_TOKEN')
   }
@@ -57,6 +71,9 @@ getHttpOptionsForLS = function (url, data, method, formData, headers) {
 
 createContent = function (data, headers, cb) {
   var url = configUtil.getConfig('BASE_URL') + configUtil.getConfig('CREATE_CONTENT_URI')
+  console.log('Our Logs: in content_provider_util.createContent')
+  console.log('url: ')
+  console.log(url)
   var options = getHttpOptions(url, data, 'POST', false, headers)
   sendRequest(options, cb)
 }
@@ -74,47 +91,52 @@ compositeSearch = function (data, headers, cb) {
 }
 
 updateContent = function (data, content_id, headers, cb) {
-
-  console.log("Inside updateContent in sb_content_provider_util")
-  console.log("Data")
-  console.log(data)
-
   var url = configUtil.getConfig('BASE_URL') + configUtil.getConfig('UPDATE_CONTENT_URI') + '/' + content_id
   var options = getHttpOptions(url, data, 'PATCH', false, headers)
-  console.log("BASE_URL:")
-  console.log(BASE_URL)
-  console.log("Complete URL")
-  console.log(url)
   sendRequest(options, cb)
 }
 
 getContent = function (content_id, headers, cb) {
   var url = configUtil.getConfig('BASE_URL') + configUtil.getConfig('GET_CONTENT_URI') + '/' + content_id
   var options = getHttpOptions(url, null, 'GET', false, headers)
+
+ console.log("New changes in getContent of sb_content_provider_util")
+ console.log("content_id =")
+ console.log(content_id)
+ console.log("headers =")
+ console.log(headers)
+ console.log("cb =")
+ console.log(cb)
+ console.log("url =")
+ console.log(url)
+ console.log("options =")
+ console.log(options)
+
+
   sendRequest(options, cb)
 }
 
 getContentUsingQuery = function (content_id, query, headers, cb) {
-
-  
   var url = configUtil.getConfig('BASE_URL') + configUtil.getConfig('GET_CONTENT_URI') + '/' + content_id
   var options = getHttpOptions(url, null, 'GET', false, headers)
+
+  console.log("New changes in getContentUsingQuery of sb_content_provider_util")
+ console.log("content_id =")
+ console.log(content_id)
+ console.log("headers =")
+ console.log(headers)
+ console.log("cb =")
+ console.log(cb)
+ console.log("query =")
+ console.log(query)
+ console.log("url =")
+ console.log(url)
+ console.log("options =")
+ console.log(options)
+
+
   options.qs = query
   sendRequest(options, cb)
-
-  console.log("New changesin getContentUsingQuery")
-  console.log("url")
-  console.log(url)
-  console.log("options")
-  console.log(options)
-  console.log("query")
-  console,log(query)
-  console.log("cb")
-  console.log(cb)
-  console.log("headers")
-  console.log(headers)
-
-
 }
 
 reviewContent = function (data, content_id, headers, cb) {

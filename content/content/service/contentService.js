@@ -138,7 +138,11 @@ function createContentAPI (req, response) {
   var rspObj = req.rspObj
 
   console.log('New changes createContentAPI')
-  console.log(data.request.content)
+  console.log('data:')
+ // console.log(data.request.content)
+  console.log(data)
+  console.log('rspObj:')
+  console.log(rspObj)
   if (!data.request || !data.request.content || !validatorUtil.validate(data.request.content, contentModel.CREATE)) {
     // prepare
     LOG.error(utilsService.getLoggerData(rspObj, 'ERROR', filename, 'createContentAPI',
@@ -174,6 +178,8 @@ function createContentAPI (req, response) {
           rspObj = utilsService.getErrorResponse(rspObj, res)
           return response.status(httpStatus).send(respUtil.errorResponse(rspObj))
         } else {
+          console.log("(new log)No error in waterfall of createcontentAPI")
+          console.log(res)
           CBW(null, res)
         }
       })
@@ -442,6 +448,20 @@ function publishContentAPI (req, response) {
   var ekStepReqData = {
     request: data.request
   }
+
+
+console.log("New changes in publishContentApi of contentService.js")
+console.log("data =")
+console.log(data)
+console.log("ekStepReqData =")
+console.log(ekStepReqData)
+console.log("data.contentId =")
+console.log(data.contentId)
+
+
+
+
+
   // Adding objectData in telemetry
   if (rspObj.telemetryData) {
     rspObj.telemetryData.object = utilsService.getObjectData(data.contentId, 'content', '', {})
@@ -476,6 +496,10 @@ function publishContentAPI (req, response) {
           rspObj = utilsService.getErrorResponse(rspObj, res)
           return response.status(httpStatus).send(respUtil.errorResponse(rspObj))
         } else {
+
+console.log("There is no error in waterfall of publishContentApI")
+
+
           CBW(null, res)
         }
       })

@@ -1,4 +1,7 @@
-
+/*
+Contributed by Pradip Karnavat
+Email: karnavatpradip12345@gmail.com
+*/
 angular.module('playerApp').directive('fileModel', ['$parse', function ($parse) {
             return {
                restrict: 'A',
@@ -16,82 +19,128 @@ angular.module('playerApp').directive('fileModel', ['$parse', function ($parse) 
          }]);
 
 
+angular.module('playerApp').service('multipartForm', ['$http', function($http){
+      this.post = function(uploadUrl, data){
+        var fd = new FormData();
+        fd.append('coursetitle',data.coursetitle);
+        fd.append('description',data.description);
+        fd.append('myFile',data.myFile);
+        // for(var key in data){
+        //  fd.append(key, data[key]);
+        //   console.log(key + " " + data[key])
+        // }
+        $http.post(uploadUrl, fd, {
+          transformRequest: angular.indentity,
+          headers: { 'Content-Type': undefined }
+        });
+      }
+     }])
 
 
 
-
-angular.module('playerApp').controller('iitbxCreateCourseCtrl', function($scope,$http,$location,$route,$routeParams) {
+angular.module('playerApp').controller('iitbxCreateCourseCtrl', ['$scope','multipartForm',function($scope,multipartForm) {
   
-	
+	$scope.newtopic = {};
+  $scope.newtopic.title="";
+  $scope.showaddform = false;
+  $scope.formdata = {};
+  $scope.formdata.topics = [{
+    "title":"Unit1"
+  },
+  {
+    "title":"Unit2"
+  }];
+      $scope.submit = function(){
+        var uploadUrl = 'http://10.129.103.85:5000/v1/course/iitbx';
+        console.log($scope.formdata);
+        multipartForm.post(uploadUrl, $scope.formdata);
+    }
+
+    $scope.removeTopic = function(item){
+      var index = $scope.formdata.topics.indexOf(item);
+      if (index > -1) {
+          $scope.formdata.topics.splice(index, 1);
+      }
+    }
+
+    $scope.addtopic = function(){
+      $scope.showaddform = true;
+      $scope.newtopic.title = "";
+
+    }
+    $scope.add = function(){
+      var newtopictemp = {};
+      newtopictemp.title = $scope.newtopic.title;
+      $scope.formdata.topics.push(newtopictemp);
+      $scope.showaddform = false;
+    }
+// $scope.submitCourse = function(){
 
 
-$scope.submitCourse = function(){
-
-
-				var file = $scope.myFile;
+// 				var file = $scope.myFile;
                
-               // console.log('file is ' );
-               // console.dir(file);
+//                // console.log('file is ' );
+//                // console.dir(file);
 
-            var filepdf = $scope.myFilepdf;
-
-
-            var coursedataform = new FormData();
-               coursedataform.append('coursetitle', $scope.coursetitle);
-               coursedataform.append('coursedescription', $scope.description);
-               coursedataform.append('thumbnail', file);
-               coursedataform.append('filepdf',filepdf);
+//             var filepdf = $scope.myFilepdf;
 
 
-            var coursedata = {
-               'coursetitle':$scope.coursetitle,
-               'coursedescription':$scope.description,
-               'thumbnail':file,
-               'filepdf':filepdf
-            }
+//             var coursedataform = new FormData();
+//                coursedataform.append('coursetitle', $scope.coursetitle);
+//                coursedataform.append('coursedescription', $scope.description);
+//                coursedataform.append('thumbnail', file);
+//                coursedataform.append('filepdf',filepdf);
+
+
+//             var coursedata = {
+//                'coursetitle':$scope.coursetitle,
+//                'coursedescription':$scope.description,
+//                'thumbnail':file,
+//                'filepdf':filepdf
+//             }
 
 
 
 
 			      
 
-         //       console.log(coursedata);
+//          //       console.log(coursedata);
 
-               console.log(coursedataform.get('filepdf'));
+//                console.log(coursedataform.get('filepdf'));
                
 
             
-            $http({
-                        method: 'POST',
-                        url: 'http://10.129.103.85:5000/v1/course/iitbx',
-                        headers: {'Content-Type': undefined},
-                        data: coursedataform
-                 }).then(function success(response) {
+//             $http({
+//                         method: 'POST',
+//                         url: 'http://10.129.103.85:5000/v1/course/iitbx',
+//                         headers: {'Content-Type': undefined},
+//                         data: coursedataform
+//                  }).then(function success(response) {
 
-                        // $scope.coursedetails = response.data;
-                        console.log(response.data);
+//                         // $scope.coursedetails = response.data;
+//                         console.log(response.data);
                         
 
-                 }, function error(response) {
-                         alert("Error ! Error ! Error !");
-                         console.log(response.data);
-                });
-               // $https:.post(, fd, {
-               //    transformRequest: angular.identity,
-               //    headers: {'Content-Type': undefined}
-               // })
+//                  }, function error(response) {
+//                          alert("Error ! Error ! Error !");
+//                          console.log(response.data);
+//                 });
+//                // $https:.post(, fd, {
+//                //    transformRequest: angular.identity,
+//                //    headers: {'Content-Type': undefined}
+//                // })
             
-               // .success(function(){
-               // })
+//                // .success(function(){
+//                // })
             
-               // .error(function(){
-               // });
+//                // .error(function(){
+//                // });
 
 
 			
-	// alert($scope.coursetitle +" "+$scope.description);
+// 	// alert($scope.coursetitle +" "+$scope.description);
 
 
-}
+// }
 
-});
+}]);

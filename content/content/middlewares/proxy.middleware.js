@@ -10,15 +10,6 @@ module.exports = function (app) {
   var contentProviderApiKey = configUtil.getConfig('Authorization_TOKEN')
   var reqDataLimitOfContentUpload = configUtil.getConfig('CONTENT_UPLOAD_REQ_LIMIT')
 
-
-console.log("New changes at proxy.middleware.js")
-console.log("requestMiddleware.createAndValidateRequestBody =")
-console.log(requestMiddleware.createAndValidateRequestBody)
-console.log("requestMiddleware.validateToken =")
-console.log(requestMiddleware.validateToken)
-console.log("requestMiddleware.apiAccessForCreatorUser= ")
-console.log(requestMiddleware.apiAccessForCreatorUser)
-
   app.use('/api/*', proxy(contentProviderBaseUrl, {
     proxyReqOptDecorator: function (proxyReqOpts, srcReq) {
       proxyReqOpts.headers['Authorization'] = contentProviderApiKey

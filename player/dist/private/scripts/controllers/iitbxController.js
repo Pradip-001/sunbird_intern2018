@@ -1,3 +1,9 @@
+/*Contributed By Pradip Karnavat
+
+Email: karnavatpradip12345@gmail.com
+
+*/
+
 angular.module('playerApp').controller('iitbxCtrl', function($scope,$http) {
     $scope.resdata = "Utkarsh";
     

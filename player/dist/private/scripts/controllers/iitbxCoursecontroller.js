@@ -1,3 +1,9 @@
+/*
+Contributed By : Pradip Karnavat
+Emain: karnavatpradip12345@gmail.com
+*/
+
+
 angular.module('playerApp').controller('iitbxCourseCtrl', function($scope,$http,$location,$route,$routeParams) {
   
 	var url = $location.path().split('/');

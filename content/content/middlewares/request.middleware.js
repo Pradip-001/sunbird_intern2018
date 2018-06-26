@@ -37,6 +37,9 @@ var apiInterceptor = new ApiInterceptor(keyCloakConfig, cacheConfig)
  * @returns {unresolved}
  */
 function createAndValidateRequestBody (req, res, next) {
+
+ console.log(" we are in createAndValidateRequestBody of request.middleware.js")
+
   req.body.ts = new Date()
   req.body.url = req.url
   req.body.path = req.route.path
@@ -52,7 +55,7 @@ function createAndValidateRequestBody (req, res, next) {
     startTime: new Date(),
     method: req.originalMethod
   }
-  console.log("New Changes at create and validate body ")
+
   rspObj.telemetryData = {
     params: utilsService.getParamsDataForLogEvent(rspObj),
     context: utilsService.getTelemetryContextData(req),
@@ -70,7 +73,7 @@ function createAndValidateRequestBody (req, res, next) {
   var requestedData = {body: req.body, params: req.body.params, headers: req.headers}
   LOG.info(utilsService.getLoggerData(rspObj, 'INFO',
     filename, 'createAndValidateRequestBody', 'API request come', requestedData))
-  console.log("New Changes LOG.info")
+
   req.rspObj = rspObj
   next()
 }
@@ -82,15 +85,13 @@ function createAndValidateRequestBody (req, res, next) {
  * @param  {Function} next
  */
 function validateToken (req, res, next) {
+
+console.log("We are in validateToken of request.middleware.js")
+
+
+
   var token = req.headers['x-authenticated-user-token']
   var rspObj = req.rspObj
-
-
-  console.log("New Changes validateToken")
-  console.log(rspObj)
-
-
-
 
   if (!token) {
     LOG.error(utilsService.getLoggerData(rspObj, 'ERROR', filename, 'validateToken', 'API failed due to missing token'))
@@ -129,11 +130,6 @@ function apiAccessForCreatorUser (req, response, next) {
   var userId = req.headers['x-authenticated-userid']
   var data = {}
   var rspObj = req.rspObj
- 
-
-
-
-
   var qs = {
     fields: 'createdBy'
   }
@@ -141,8 +137,21 @@ function apiAccessForCreatorUser (req, response, next) {
 
   data.contentId = req.params.contentId
 
-  console.log("contentMessage")
-  console.log(contentMessage)
+  console.log("New changes in apiAccessForCreatorUser of request.middleware.js")
+  console.log(" req =")
+  console.log(req)
+  console.log(" response =")
+  console.log(response)
+  console.log("userId =")
+  console.log(userId)
+  console.log("data =")
+console.log(data)
+console.log("qs =")
+console.log(qs)
+console.log("data.contentId =")
+console.log(data.contentId)
+
+
 
 
 
@@ -154,7 +163,9 @@ function apiAccessForCreatorUser (req, response, next) {
         function (err, res) {
           if (err || res.responseCode !== responseCode.SUCCESS) {
 
-            console.log("In erroe fn in waterfall")
+            console.log("error found in apiAccessForCreatorUser")
+
+
             LOG.error(utilsService.getLoggerData(rspObj, 'ERROR', filename,
               'apiAccessForCreatorUser', 'Getting error from content provider', res))
             rspObj.errCode = res && res.params ? res.params.err : contentMessage.GET.FAILED_CODE
@@ -163,7 +174,10 @@ function apiAccessForCreatorUser (req, response, next) {
             var httpStatus = res && res.statusCode >= 100 && res.statusCode < 600 ? res.statusCode : 500
             return response.status(httpStatus).send(respUtil.errorResponse(rspObj))
           } else {
-   		console.log("NO error in waterfall ")
+
+              console.log("No error found in waterfall of apiAccessForCreatorUser")
+
+
             CBW(null, res)
           }
         })
@@ -200,6 +214,15 @@ function apiAccessForReviewerUser (req, response, next) {
   var contentMessage = messageUtil.CONTENT
 
   data.contentId = req.params.contentId
+ 
+
+ console.log("New changes in apiAccessForReviewerUser of request.middleware.js")
+ console.log("UserId =")
+ console.log(userId)
+ console.log("data =")
+ console.log(data)
+ 
+
 
   async.waterfall([
 
@@ -215,6 +238,10 @@ function apiAccessForReviewerUser (req, response, next) {
             var httpStatus = res && res.statusCode >= 100 && res.statusCode < 600 ? res.statusCode : 500
             return response.status(httpStatus).send(respUtil.errorResponse(rspObj))
           } else {
+
+ console.log("There is no error waterfall of  apiAccessForReviewerUser")
+
+
             CBW(null, res)
           }
         })
@@ -248,13 +275,15 @@ function hierarchyUpdateApiAccess (req, response, next) {
     fields: 'createdBy'
   }
   var contentMessage = messageUtil.CONTENT
-  console.log("New changes in request.middleware")
-  console.log("userId")
-  console.log(userId)
-  console.log(rspObj)
+
   
-  console.log("New changes :Accessed data by HierarchyUpdateAPi Acceess")
-  console.log(data)
+ console.log("New Changes in hierarchyUpdateApiAccess of request.middleware.js")
+ console.log("data =")
+ console.log(data)
+ console.log("rspObj: ")
+ console.log(rspObj) 
+
+
   if (!data.request || !data.request.data || !data.request.data.hierarchy) {
     LOG.error(utilsService.getLoggerData(rspObj, 'ERROR', filename, 'hierarchyUpdateApiAccess',
       'Error due to required params are missing', data.request))
@@ -265,14 +294,15 @@ function hierarchyUpdateApiAccess (req, response, next) {
   }
 
   var hierarchy = data.request.data.hierarchy
+
+ console.log("hierarchy =")
+ console.log(hierarchy)
+ 
+
+
   data.contentId = _.findKey(hierarchy, function (item) {
     if (item.root === true) return item
   })
-
-  console.log("new Changes: hierarchy=")
-  console.log(hierarchy)
-  console.log("data.contentId=")
-  console.log(data.contentId)
 
   async.waterfall([
     function (CBW) {
@@ -284,12 +314,10 @@ function hierarchyUpdateApiAccess (req, response, next) {
           rspObj.errMsg = res && res.params ? res.params.errmsg : contentMessage.GET.FAILED_MESSAGE
           rspObj.responseCode = res && res.responseCode ? res.responseCode : responseCode.SERVER_ERROR
           var httpStatus = res && res.statusCode >= 100 && res.statusCode < 600 ? res.statusCode : 500
-    	  console.log("New Changes : httpStatus & rspObj")
-	  console.log(httpStatus)
-	 console.log(rspObj)
           return response.status(httpStatus).send(respUtil.errorResponse(rspObj))
         } else {
-          console.log("No error in Waterfall")
+
+          console.log("No error in waterfall of hierarchyUpdateApi Access ")
 	  console.log(res)
           CBW(null, res)
         }
@@ -297,6 +325,7 @@ function hierarchyUpdateApiAccess (req, response, next) {
     },
     function (res) {
       if (res.result.content.createdBy !== userId) {
+	console.log('error in second func of waterfall of hierarchyUpdateApi Access')
         LOG.error(utilsService.getLoggerData(rspObj, 'ERROR', filename,
           'apiAccessForCreatorUser', 'Content createdBy and userId not matched',
           {createBy: res.result.content.createdBy, userId: userId}))
@@ -305,6 +334,7 @@ function hierarchyUpdateApiAccess (req, response, next) {
         rspObj.responseCode = responseCode.UNAUTHORIZED_ACCESS
         return response.status(401).send(respUtil.errorResponse(rspObj))
       } else {
+	console.log('no error in second func of waterfall of hierarchyUpdateApi Access')
         next()
       }
     }

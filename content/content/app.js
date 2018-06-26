@@ -54,7 +54,9 @@ process.env.dial_code_image_temp_folder = 'temp'
 
 var app = express()
 const isEkStepProxyRequest = function (req) {
+  
   let url = req.url
+  console.log("app.js changes:", url)
   const uploadAPI = configUtil.getConfig('UPLOAD_CONTENT_URI')
   const uploadUrlAPI = configUtil.getConfig('CONTENT_UPLOAD_URL_URI')
   return url && ((url.indexOf(uploadAPI) > -1 && !(url.indexOf(uploadUrlAPI) > -1)) || url.indexOf('/telemetry') > -1)
