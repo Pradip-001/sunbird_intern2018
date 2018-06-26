@@ -158,7 +158,10 @@ function createContentAPI (req, response) {
   var ekStepReqData = {
     request: data.request
   }
-
+  console.log('Ekstep Request in ContentService:')
+  console.log(ekStepReqData)
+  console.log('Content Provider Details:')
+  console.log(contentProvider)
   async.waterfall([
 
     function (CBW) {
@@ -178,7 +181,7 @@ function createContentAPI (req, response) {
           rspObj = utilsService.getErrorResponse(rspObj, res)
           return response.status(httpStatus).send(respUtil.errorResponse(rspObj))
         } else {
-          console.log("(new log)No error in waterfall of createcontentAPI")
+          console.log("Response to next Function in waterfall of createcontentAPI")
           console.log(res)
           CBW(null, res)
         }
@@ -187,6 +190,8 @@ function createContentAPI (req, response) {
     function (res) {
       rspObj.result.content_id = res.result.node_id
       rspObj.result.versionKey = res.result.versionKey
+      console.log('In Function Callback response:')
+      console.log(res.result.node_id)
       LOG.info(utilsService.getLoggerData(rspObj, 'INFO', filename, 'createContentAPI',
         'Sending response back to user', rspObj))
       return response.status(200).send(respUtil.successResponse(rspObj))
