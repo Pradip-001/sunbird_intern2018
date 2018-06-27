@@ -10,8 +10,7 @@ angular.module('playerApp').directive('bookmark', function () {
       isSearchPage: '='
     },
     link: function (scope, element, attrs) {
-
     },
-    controller: 'bookmarkController'
+    controller:"bookmarkController"
   }
 })
