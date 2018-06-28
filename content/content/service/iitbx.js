@@ -5,7 +5,8 @@ const request =require("request");
 const http = require("http");
 var storageUrl="";
 var xAuth="";
-
+var fs = require('fs');
+var path = require('path');
 
 function generateSwiftAuth()
 {
@@ -118,9 +119,46 @@ module.exports = {
 		
 	},
 	uploadCourseAPI : function(req,res){
-		console.log(req.body);
-		console.log(req.file);
-		res.json({success :'200'});
+		
+		fileName = req.file.filename;
+		mimeType = req.file.mimetype;
+	
+		file = fs.readFileSync(path.join(__dirname+'/uploads', fileName));
+		// filepath= "@" + filepath;
+		//res.send("OK")
+ 		var postheaders = {
+ 			'x-auth-token' : xAuth,
+		    'Content-Type' : mimeType,
+		    'Content-Length' : Buffer.byteLength(file, null)
+		};
+		// console.log(postheaders['Content-Length'])
+		var options = {
+		    host: '10.129.103.86',
+			port: 8080,
+			path: '/v1/AUTH_b3f70be8acad4ec197e2b5edf48d9e5a/marktwain/'+fileName,
+		    method: 'PUT',
+		    headers : postheaders,
+		    encoding : null
+		};
+
+		var reqPost = http.request(options, function(response) {
+		    console.log("statusCode: ", response.statusCode);
+			 
+			response.on('data', function(d) {
+		        console.info('POST result:\n');
+		        process.stdout.write(d);
+		        console.info('\n\nPOST completed')
+		        res.send("OK DONE")
+		    });
+
+		});
+		 
+		console.log('Writing Data');
+		reqPost.write(file,null);
+		reqPost.end();
+		reqPost.on('error', function(e) {
+		    console.error(e);
+		});
 	}
 
 }

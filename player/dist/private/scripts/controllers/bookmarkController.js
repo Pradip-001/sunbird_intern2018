@@ -3,7 +3,7 @@
 angular.module('playerApp').controller('bookmarkController', function ($scope,$rootScope,$stateParams) {
 	$scope.bookmarked = false; 
 	$scope.bookmarkBtnClick = function() {
-				alert("org Id: "+$rootScope.organisationIds+"userId: "+$rootScope.userId+"course ID: "+ $stateParams.courseId+" contentId: " + $scope.$parent.item.name);
+				alert("org Id: "+$rootScope.organisationIds+"userId: "+$rootScope.userId+"course ID: "+ $stateParams.courseId+" contentId: " + $scope.$parent.item.identifier);
 				if($scope.bookmarked==false)
 				$scope.bookmarked = true;
 				else
